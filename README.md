@@ -1,71 +1,15 @@
-[<img width="134" src="https://vk.com/images/apps/mini_apps/vk_mini_apps_logo.svg">](https://vk.com/services)
+# Мини-апп: демонстрация бага ❌
 
-# Create VK Mini App [![npm][npm]][npm-url] [![deps][deps]][deps-url]
+При переходе назад от третьей панели(Empty) к второй(Persik), не происходит восстановление скролла.  
+Если в App.js переместить Empty после Persik. То поведение станет корректным.  
 
-## How to use
+Скорее всего это связано с неправильным определением **isBackTransition** в компоненте [View](https://github.com/VKCOM/VKUI/blob/master/packages/vkui/src/components/View/View.tsx)
+``` lang-js
+const firstLayerId = (React.Children.toArray(children) as React.ReactElement[])
+  .map((panel) => getNavId(panel.props, warn))
+  .find((id) => id === prevActivePanel || id === activePanelProp);
 
-### With NPX
-
-```bash
-npx @vkontakte/create-vk-mini-app@latest [app-directory-name] [options]
+const isBackTransition = firstLayerId === activePanelProp;
 ```
 
-[NPX](https://github.com/npm/npx) allows you to always use the **latest** version of the package without a global installation.
-
-### With installing the package globally
-
-Install the package globally via yarn
-
-```bash
-yarn global add @vkontakte/create-vk-mini-app
-```
-
-...or npm
-
-```bash
-npm install --global @vkontakte/create-vk-mini-app
-```
-
-and use as follows
-
-```bash
-create-vk-mini-app [app-directory-name] [options]
-```
-
-This way is less recommended because you will have to update the package yourself.
-
-### Options
-
-Without `--zeit` and `--surge` options
-
-#### `--zeit`
-
-Vercel (Zeit) deploy
-
-Firstly, you have to create Vercel account and connect it with your GitHub profile on [vercel.com](https://vercel.com)
-
-#### `--surge <surge-domain>`
-
-Surge deploy
-
-Firstly, you have to create Surge account and Surge-domain on [surge.sh](https://surge.sh)
-
-#### `--template <templat-type>`
-
-Build with specific template (`typescript` or `javascript`)
-
-#### `--help`
-
-Prints the synopsis and a list of options
-
-## How to start work with app
-
-Go to created folder and run:
-`yarn start` or `npm start` to start dev server with hot reload on `localhost:10888`.
-
-`yarn run build` or `npm run build` to build production bundle, with tree-shaking, uglify and all this modern fancy stuff.
-
-[npm]: https://img.shields.io/npm/v/@vkontakte/create-vk-mini-app.svg
-[npm-url]: https://npmjs.com/package/@vkontakte/create-vk-mini-app
-[deps]: https://img.shields.io/david/vkcom/create-vk-mini-app.svg
-[deps-url]: https://david-dm.org/vkcom/create-vk-mini-app
+### Посмотреть мини апп можно [тут](https://vk.com/app51662644) или [тут](https://prod-app51662644-5ada9ddf8eb5.pages-ac.vk-apps.com/index.html)
