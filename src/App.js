@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import bridge from "@vkontakte/vk-bridge";
 import {
   View,
-  ScreenSpinner,
   AdaptivityProvider,
   AppRoot,
   ConfigProvider,
@@ -17,18 +16,7 @@ import Empty from './panels/Empty'
 
 const App = () => {
   const [activePanel, setActivePanel] = useState("home");
-  const [fetchedUser, setUser] = useState(null);
-  const [popout, setPopout] = useState(<ScreenSpinner size="large" />);
-  console.log(activePanel)
-
-  useEffect(() => {
-    async function fetchData() {
-      const user = await bridge.send("VKWebAppGetUserInfo");
-      setUser(user);
-      setPopout(null);
-    }
-    fetchData();
-  }, []);
+  const [fetchedUser] = useState(null);
 
   const go = React.useCallback((e) => {
     setActivePanel(e);
@@ -38,7 +26,7 @@ const App = () => {
     <ConfigProvider>
       <AdaptivityProvider>
         <AppRoot>
-          <SplitLayout popout={popout}>
+          <SplitLayout >
             <SplitCol>
               <View activePanel={activePanel}>
 				<Empty id="empty" go={go} />
